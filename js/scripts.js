@@ -1,39 +1,30 @@
 $(document).ready(function() {
-    // 1. Adding a new item to the list
-    $('#button').click(function() {
-      let inputValue = $('#input').val();
-  
-      if (inputValue === '') {
-        alert("You must write something!");
-      } else {
-        let li = $('<li></li>');
-        li.text(inputValue);
-        $('#list').append(li);
-        $('#input').val('');
-  
-        // 2. Crossing out an item from the list
-        function crossOut() {
-          li.toggleClass("strike");
-        }
-  
-        li.on("dblclick", function() {
-          crossOut();
-        });
-  
-        // 3(i). Adding the delete button "X"
-        let crossOutButton = $('<crossOutButton></crossOutButton>');
-        crossOutButton.append(document.createTextNode('X'));
-        li.append(crossOutButton);
-  
-        crossOutButton.on("click", deleteListItem);
-  
-        // 3(ii). Adding CLASS DELETE (DISPLAY: NONE) from the CSS
-        function deleteListItem() {
-          li.addClass("delete");
-        }
-      }
+  // Add new item
+  $("#button").click(function() {
+    var inputValue = $("#input").val();
+    if (inputValue === '') {
+      alert("You must write something!");
+    } else {
+      $("#list").append("<li>" + inputValue + "<span class='close'>\u00D7</span></li>");
+    }
+    $("#input").val("");
+
+    // Attach click event to new close buttons
+    $(".close").click(function() {
+      $(this).parent().remove();
     });
-  
-    // 4. Reordering the items
-    $('#list').sortable();
   });
+
+  // Cross out item on double-click
+  $(document).on('dblclick', 'li', function() {
+    $(this).toggleClass('checked');
+  });
+
+  // Delete item
+  $(document).on('click', '.close', function() {
+    $(this).parent().remove();
+  });
+
+  // Enable sorting
+  $("#list").sortable();
+});
